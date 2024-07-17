@@ -4,7 +4,7 @@ import os
 import cv2
 import numpy as np
 
-def get_data(input_path):
+def get_data(input_path, data_path):
     """Parse the data from annotation file
 
     Args:
@@ -68,7 +68,7 @@ def get_data(input_path):
             if filename not in all_imgs:
                 all_imgs[filename] = {}
                 
-                filepath = os.path.join("train/", filename + ".pgm")
+                filepath = os.path.join(data_path, filename + ".pgm")
                 
                 print(f"reading {filepath}")
 
