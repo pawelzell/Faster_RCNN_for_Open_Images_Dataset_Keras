@@ -256,7 +256,8 @@ def augment(img_data, config, augment=False, mode="train"):
 
     img_data_aug = copy.deepcopy(img_data)
 
-    filepath = os.path.join(mode + "/", img_data_aug['filepath'] + '.pgm')
+    #filepath = os.path.join(mode + "/", img_data_aug['filepath'] + '.pgm')
+    filepath = img_data_aug['filepath']
     img = cv2.imread(filepath)
     img = cv2.imread(filepath, cv2.IMREAD_GRAYSCALE)
     x, y = img.shape

@@ -39,6 +39,8 @@ class Config:
     def __init__(self):
         # Print the process or not
         self.verbose = True
+        
+        self.num_channels = num_channels
 
         # Name of base network
         self.network = 'vgg'

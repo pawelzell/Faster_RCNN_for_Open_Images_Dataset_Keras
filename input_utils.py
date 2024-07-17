@@ -78,7 +78,7 @@ def get_data(input_path, data_path):
                 x, y = img.shape
                 img = img.reshape(x, y, 1)
                 (rows,cols) = img.shape[:2]
-                all_imgs[filename]['filepath'] = filename
+                all_imgs[filename]['filepath'] = filepath
                 all_imgs[filename]['width'] = cols
                 all_imgs[filename]['height'] = rows
                 all_imgs[filename]['bboxes'] = []
