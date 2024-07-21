@@ -4,11 +4,12 @@ import os
 import cv2
 import numpy as np
 
-def get_data(input_path, data_path):
+def get_data(annotation_file_path, data_path):
     """Parse the data from annotation file
 
     Args:
-        input_path: annotation file path
+        annotation_file_path: annotation file path
+        data_path: base directory with image files
 
     Returns:
         all_data: list(filepath, width, height, list(bboxes))
@@ -28,9 +29,9 @@ def get_data(input_path, data_path):
 
     i = 1
 
-    with open(input_path,'r') as f:
+    with open(annotation_file_path,'r') as f:
 
-        print('Parsing annotation files')
+        print('Parsing annotation file')
 
         for line in f:
 

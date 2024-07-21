@@ -53,7 +53,8 @@ class Config:
         # Anchor box scales
         # Note that if im_size is smaller, anchor_box_scales should be scaled
         # Original anchor_box_scales in the paper is [128, 256, 512]
-        self.anchor_box_scales = [64, 128, 256] 
+        # self.anchor_box_scales = [64, 128, 256]
+        self.anchor_box_scales = [32, 64, 128, 300]
 
         # Anchor box ratios
         self.anchor_box_ratios = [[1, 1], [1./math.sqrt(2), 2./math.sqrt(2)], [2./math.sqrt(2), 1./math.sqrt(2)]]
