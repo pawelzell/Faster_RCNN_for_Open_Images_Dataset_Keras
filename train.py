@@ -155,7 +155,10 @@ def calc_rpn(C, img_data, width, height, resized_width, resized_height, img_leng
                     for bbox_num in range(num_bboxes):
 
                         # get IOU of the current GT box and the current anchor box
-                        curr_iou = iou([gta[bbox_num, 0], gta[bbox_num, 2], gta[bbox_num, 1], gta[bbox_num, 3]], [x1_anc, y1_anc, x2_anc, y2_anc])
+                        if img_data['bboxes'][bbox_num]['class'] != 'bg':
+                            curr_iou = iou([gta[bbox_num, 0], gta[bbox_num, 2], gta[bbox_num, 1], gta[bbox_num, 3]], [x1_anc, y1_anc, x2_anc, y2_anc])
+                        else:
+                            curr_iou = 0.0
                         # calculate the regression targets if they will be needed
                         if curr_iou > best_iou_for_bbox[bbox_num] or curr_iou > C.rpn_max_overlap:
                             cx = (gta[bbox_num, 0] + gta[bbox_num, 1]) / 2.0
@@ -213,7 +216,7 @@ def calc_rpn(C, img_data, width, height, resized_width, resized_height, img_leng
                         start = 4 * (anchor_ratio_idx + n_anchratios * anchor_size_idx)
                         y_rpn_regr[jy, ix, start:start+4] = best_regr
 
-    # we ensure that every bbox has at least one positive RPN region
+    # we ensure that every bbox has at least one positive RPN region - PROBLEM !!!
 
     for idx in range(num_anchors_for_bbox.shape[0]):
         if num_anchors_for_bbox[idx] == 0:
@@ -367,12 +370,13 @@ def get_anchor_gt(all_img_data, C, img_length_calc_function, mode='train'):
         img_data_aug: augmented image data (original image with augmentation)
         debug_img: show image for debug
         num_pos: show number of positive anchors for debug
+        debug_dict: dictionary of debug data
     """
     while True:
 
         for img_data in all_img_data:
             try:
-
+                debug_dict = copy.deepcopy(img_data)
                 # read in image, and optionally add augmentation
 
                 # TODO here we pass augument=True/False dep. on train/test maybe add it later
@@ -415,7 +419,7 @@ def get_anchor_gt(all_img_data, C, img_length_calc_function, mode='train'):
                 y_rpn_cls = np.transpose(y_rpn_cls, (0, 2, 3, 1))
                 y_rpn_regr = np.transpose(y_rpn_regr, (0, 2, 3, 1))
 
-                yield np.copy(x_img), [np.copy(y_rpn_cls), np.copy(y_rpn_regr)], img_data_aug, debug_img, num_pos
+                yield np.copy(x_img), [np.copy(y_rpn_cls), np.copy(y_rpn_regr)], img_data_aug, debug_img, num_pos, debug_dict
 
             except Exception as e:
                 print(e)
