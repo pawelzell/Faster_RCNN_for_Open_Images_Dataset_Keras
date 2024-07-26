@@ -1,0 +1,5 @@
+pip install opencv-python
+pip install --upgrade nbconvert
+pip install matplotlib
+pip install pandas
+pip install scikit-learn
