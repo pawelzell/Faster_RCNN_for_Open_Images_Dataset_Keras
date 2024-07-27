@@ -4,11 +4,11 @@ import os
 import cv2
 import numpy as np
 
-def get_data(annotation_file_path, data_path):
+def get_data(annotation_filename, data_path):
     """Parse the data from annotation file
 
     Args:
-        annotation_file_path: annotation file path
+        annotation_filename: annotation file path
         data_path: base directory with image files
 
     Returns:
@@ -29,7 +29,9 @@ def get_data(annotation_file_path, data_path):
 
     i = 1
 
-    with open(annotation_file_path,'r') as f:
+    annotation_filepath = os.path.join(data_path, annotation_filename)
+
+    with open(annotation_filepath,'r') as f:
 
         print('Parsing annotation file')
 
@@ -83,10 +85,6 @@ def get_data(annotation_file_path, data_path):
                 all_imgs[filename]['width'] = cols
                 all_imgs[filename]['height'] = rows
                 all_imgs[filename]['bboxes'] = []
-                # if np.random.randint(0,6) > 0:
-                # 	all_imgs[filename]['imageset'] = 'trainval'
-                # else:
-                # 	all_imgs[filename]['imageset'] = 'test'
 
             all_imgs[filename]['bboxes'].append({'class': class_name, 'x1': int(x1), 'x2': int(x2), 'y1': int(y1), 'y2': int(y2)})
 
@@ -102,6 +100,10 @@ def get_data(annotation_file_path, data_path):
                 val_to_switch = class_mapping['bg']
                 class_mapping['bg'] = len(class_mapping) - 1
                 class_mapping[key_to_switch] = val_to_switch
+
+        if 'bg' not in classes_count:
+            classes_count['bg'] = 0
+            class_mapping['bg'] = len(class_mapping)
 
         return all_data, classes_count, class_mapping
 
